@@ -1,0 +1,1 @@
+console.log("Past events page")
