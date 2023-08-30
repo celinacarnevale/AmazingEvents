@@ -36,3 +36,8 @@ html{
 .footertext{
     color: #ffffff;
 }
+
+.card-img-top{
+    object-fit: cover;
+    height: 20vh;
+}
