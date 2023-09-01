@@ -30,7 +30,7 @@ html{
 .carouselpic{
     filter: brightness(60%);
     height: 35vh;
-    object-fit: cover;
+    object-fit: cover;                                                                                                                
 }
 
 .footertext{
@@ -40,4 +40,19 @@ html{
 .card-img-top{
     object-fit: cover;
     height: 20vh;
+}
+
+.card:hover{
+    box-shadow: 7px 7px 10px #BC808E !important;
+}
+
+.favorite{
+    padding: 0;
+    width: 4vw;
+    fill: #ffffff;
+}
+
+.favorite.style{
+    fill: #D90368 !important;
+    border: none !important;
 }
