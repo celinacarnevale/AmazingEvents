@@ -26,16 +26,37 @@ let cards = document.querySelector('.eventcards');
 
 cards.innerHTML = templatecards;
 
-// let templatecheck = ''
-// for (let event of data.events){
-//     templatecheck += `<label class="form-check-label ms-3" for="category2">
-//     <input class="form-check-input" type="checkbox" id="category2">${event.category}
-//     </label>`
-// }
 
-// let checkboxes = document.getElementById('checkboxes');
+//Para los checkbox que muestran categorias
+const $checkContainer = document.getElementById('checkboxes')
 
-// checkboxes.innerHTML = templatecheck;
+const nonRepeatCateg = [ ...new Set(data.events.map(events => events.category))]
+
+function estructuraChecks(string){
+    let templatecheck = ''
+    templatecheck = `<label class="form-check-label ms-3" for="category">
+    <input class="form-check-input" type="checkbox" name="${string}" value="${string}" id="category">${string}
+    </label>`
+
+    return templatecheck
+}
+
+function printCheck(array, HTMLelement){
+    let estructure = ''
+    array.forEach(category => {
+        estructure += estructuraChecks(category)
+    });
+
+    HTMLelement.innerHTML = estructure;
+}
+
+printCheck(nonRepeatCateg, $checkContainer)
+
+$checkContainer.addEventListener('change', (e) => {
+    let nodeList = document.querySelectorAll('input[type="checkbox"]:checked')
+    let arrayValores = Array.fron(nodeList).map(input => input.value)
+    console.log(arrayValores)
+})
 
 
 //Funcion para favoritos
