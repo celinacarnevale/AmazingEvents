@@ -42,10 +42,87 @@ function addEvent(filteredArrays){
 
 let cardTemplate = addEvent(past)
 
-console.log(past)
+let cards = document.getElementById('eventcards');
 
-let cards = document.querySelector('.eventcards')
-cards.innerHTML += cardTemplate
+cards.innerHTML = cardTemplate;
+
+
+//Para los checkbox que muestran categorias
+const $checkContainer = document.getElementById('checkboxes')
+
+const $cardContainer = document.getElementById('eventcards')
+
+const nonRepeatCateg = [ ...new Set(past.map(events => events.category))]
+
+//Creacion de la estructura de los Checkboxes
+function estructuraChecks(string){
+    let templatecheck = ''
+    templatecheck = `<label class="form-check-label ms-3" for="category">
+    <input class="form-check-input" type="checkbox" name="${string}" value="${string}" id="category">${string}
+    </label>`
+
+    return templatecheck
+}
+
+//Impresion de Checks en el HTML
+function printCheck(array, HTMLelement){
+    let estructure = ''
+    array.forEach(string => {
+        estructure += estructuraChecks(string)
+    });
+
+    HTMLelement.innerHTML = estructure;
+}
+
+printCheck(nonRepeatCateg, $checkContainer)
+
+//Event Listener para que procese los checkbox marcados
+$checkContainer.addEventListener('change', (e) => {
+    let nodeList = document.querySelectorAll('input[type="checkbox"]:checked')
+    let arrayValores = Array.from(nodeList).map(check => check.value)
+    let filteredObj = past.filter( events => arrayValores.includes(events.category))
+    
+    //Para que cuando se deschequean los checkboxes aparezcan todas las cards
+    if(filteredObj.length === 0){
+        printHTMLCard(past, $cardContainer)
+    } else {
+        printHTMLCard(filteredObj, $cardContainer)
+    }
+})
+
+function createCard(objData){
+    let templatecards = ''
+    templatecards += `<div class="col" style="max-width: 23vw">
+        <div class="card h-100 shadow-lg bg-body-tertiary rounded">
+            <div class="d-flex flex-wrap position-relative">
+                <button class="favorite btn btn-lg position-absolute top-0 end-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=currentfill" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                    </svg>
+                </button>
+                <img src="${objData.image}" class="card-img-top">
+            </div>
+            <div class="card-body d-flex flex-column align-items-center">
+                <h4 class="card-title">${objData.name}</h4>
+                <p class="card-text">${objData.description}</p>
+            </div>
+            <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                <h5 class="mb-0">$${objData.price}</h5>
+                <button type="button" class="btn btn-lg btn-outline-primary">Details</button>
+            </div>
+        </div>
+    </div>`
+
+    return templatecards
+}
+
+function printHTMLCard(array, HTMLelement){
+    let structure = ''
+    array.forEach(string => {
+        structure += createCard(string)
+    })
+
+    HTMLelement.innerHTML = structure
+}
 
 //funcion para favoritos
 let favorites = document.querySelectorAll('.favorite');
