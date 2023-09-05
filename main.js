@@ -113,24 +113,38 @@ favorites.forEach(function (button) {
 });
 
 //Funcion para busqueda en search bar
-//Primero deberia tomar lo escrito en la search bar y compararlo con los nombres de eventos
- 
+
 //Event Listener para que procese los checkbox marcados
+
+let events = data.events
+
 $checkContainer.addEventListener('change', (e) => {
     let nodeList = document.querySelectorAll('input[type="checkbox"]:checked')
     let arrayValores = Array.from(nodeList).map(check => check.value)
-    let filteredObj = data.events.filter( events => arrayValores.includes(events.category))
+    let filteredObj = events.filter( events => arrayValores.includes(events.category))
 
-    let eventsFiltered = data.events.filter(event => {
-        // Filter events based on search value
+    //Actualiza las cards en base a los objetos filtrados
+    if (filteredObj.length === 0) {
+        printHTMLCard(events, $cardContainer);
+    } else {
+        printHTMLCard(filteredObj, $cardContainer);
+    }
+})
+
+const $search = document.getElementById('input')
+
+$search.addEventListener('input', function(){
+    const searchValue = $search.value.toLowerCase()
+    let eventsFiltered = events.filter(event => {
+        //Filtramos los eventos en base al input ingresado
         const eventName = event.name.toLowerCase();
         return eventName.includes(searchValue);
     });
 
     // Update the cards based on the filtered events
     if (eventsFiltered.length === 0) {
-        createCards(events, $base);
+        printHTMLCard(events, $cardContainer);
     } else {
-        createCards(eventsFiltered, $base);
+        printHTMLCard(eventsFiltered, $cardContainer);
     }
 })
