@@ -56,3 +56,12 @@ html{
     fill: #D90368 !important;
     border: none !important;
 }
+
+.detailslink{
+    text-decoration: none;
+    color: #D90368;
+}
+
+.detailslink:hover{
+    color: #fff;
+}

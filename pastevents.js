@@ -27,12 +27,12 @@ function addEvent(filteredArrays){
                     <img src="${event.image}" class="card-img-top">
                 </div>
                 <div class="card-body d-flex flex-column align-items-center">
-                    <h4 class="card-title">${event.name}</h4>
+                    <h4 class="card-title" id="cardTitle">${event.name}</h4>
                     <p class="card-text">${event.description}</p>
                 </div>
                 <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
                     <h5 class="mb-0">$${event.price}</h5>
-                    <button type="button" class="btn btn-lg btn-outline-primary">Details</button>
+                    <button type="button" class="btn btn-lg btn-outline-primary"><a href="./details.html?id=${event._id}" class="detailslink">Details</a></button>
                 </div>
             </div>
         </div>`
@@ -102,12 +102,12 @@ function createCard(objData){
                 <img src="${objData.image}" class="card-img-top">
             </div>
             <div class="card-body d-flex flex-column align-items-center">
-                <h4 class="card-title">${objData.name}</h4>
+                <h4 class="card-title" id="cardTitle">${objData.name}</h4>
                 <p class="card-text">${objData.description}</p>
             </div>
             <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
                 <h5 class="mb-0">$${objData.price}</h5>
-                <button type="button" class="btn btn-lg btn-outline-primary">Details</button>
+                <button type="button" class="btn btn-lg btn-outline-primary"><a href="./details.html?id=${objData._id}" class="detailslink">Details</a></button>
             </div>
         </div>
     </div>`
