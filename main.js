@@ -56,20 +56,6 @@ function printCheck(array, HTMLelement){
 
 printCheck(nonRepeatCateg, $checkContainer)
 
-//Event Listener para que procese los checkbox marcados
-$checkContainer.addEventListener('change', (e) => {
-    let nodeList = document.querySelectorAll('input[type="checkbox"]:checked')
-    let arrayValores = Array.from(nodeList).map(check => check.value)
-    let filteredObj = data.events.filter( events => arrayValores.includes(events.category))
-    
-    //Para que cuando se deschequean los checkboxes aparezcan todas las cards
-    if(filteredObj.length === 0){
-        printHTMLCard(data.events, $cardContainer)
-    } else {
-        printHTMLCard(filteredObj, $cardContainer)
-    }
-})
-
 function createCard(objData){
     let templatecards = ''
     templatecards += `<div class="col" style="max-width: 23vw">
@@ -114,37 +100,52 @@ favorites.forEach(function (button) {
 
 //Funcion para busqueda en search bar
 
+//Funcion para retornar texto cuando no devuelve nada la busqueda
+
+function printNotFound(elementoHTML, errorTemplate){
+    elementoHTML.innerHTML = errorTemplate
+}
+
 //Event Listener para que procese los checkbox marcados
 
 let events = data.events
 
-$checkContainer.addEventListener('change', (e) => {
-    let nodeList = document.querySelectorAll('input[type="checkbox"]:checked')
-    let arrayValores = Array.from(nodeList).map(check => check.value)
-    let filteredObj = events.filter( events => arrayValores.includes(events.category))
+const $search = document.getElementById('input')
 
-    //Actualiza las cards en base a los objetos filtrados
+function combinedFilters(){
+    
+    let filteredObj = ''
+    const searchValue = $search.value.toLowerCase()
+    let arrayValores = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(check => check.value)
+    // filteredObj = events.filter(event => arrayValores.includes(event.category))
+
+    if(arrayValores.length === 0){
+        filteredObj = events.filter(event => {
+            //Filtramos los eventos en base al input ingresado
+            const eventName = event.name.toLowerCase();
+            return eventName.includes(searchValue);
+        })
+    } else {
+        filteredObj = events.filter(event => {
+            //Filtramos los eventos en base al input ingresado
+            const eventName = event.name.toLowerCase();
+            return eventName.includes(searchValue) && arrayValores.includes(event.category);
+        })
+    }
+
+    
+    let errorTemplate = ''
+    errorTemplate = `<div class="container-fluid d-flex flex-column h-auto"><h4>Oops! Looks like we made a mistake.</h4>
+                    <p>The element you searched was not found in our database, please try to look for it with another term!
+                    If you think this is a mistake, please contact us.</p></div>`
+    
+    // Update the cards based on the filtered events
     if (filteredObj.length === 0) {
-        printHTMLCard(events, $cardContainer);
+        printNotFound($cardContainer, errorTemplate)
     } else {
         printHTMLCard(filteredObj, $cardContainer);
     }
-})
+}
 
-const $search = document.getElementById('input')
-
-$search.addEventListener('input', function(){
-    const searchValue = $search.value.toLowerCase()
-    let eventsFiltered = events.filter(event => {
-        //Filtramos los eventos en base al input ingresado
-        const eventName = event.name.toLowerCase();
-        return eventName.includes(searchValue);
-    });
-
-    // Update the cards based on the filtered events
-    if (eventsFiltered.length === 0) {
-        printHTMLCard(events, $cardContainer);
-    } else {
-        printHTMLCard(eventsFiltered, $cardContainer);
-    }
-})
+$checkContainer.addEventListener('change', combinedFilters)
+$search.addEventListener('input', combinedFilters)

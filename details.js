@@ -19,7 +19,11 @@ div.innerHTML = `<div class="row g-0">
 <div class="col-md-6">
   <div class="card-body">
     <h5 class="card-title">${objData.name}</h5>
+    <p class="card-text">${objData.category}</p>
     <p class="card-text">${objData.description}</p>
+    <p class="card-text">Place: ${objData.place}</p>
+    <p class="card-text">Capacity: ${objData.capacity}</p>
+    <p class="card-text">Price: $${objData.price}</p>
   </div>
 </div>
 </div>`

@@ -131,3 +131,54 @@ favorites.forEach(function (button) {
         this.classList.toggle('style');
     });
 });
+
+//Funcion para busqueda en search bar
+
+//Funcion para retornar texto cuando no devuelve nada la busqueda
+
+function printNotFound(elementoHTML, errorTemplate){
+    elementoHTML.innerHTML = errorTemplate
+}
+
+//Event Listener para que procese los checkbox marcados
+
+let events = data.events
+
+const $search = document.getElementById('input')
+
+function combinedFilters(){
+    
+    let filteredObj = ''
+    const searchValue = $search.value.toLowerCase()
+    let arrayValores = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(check => check.value)
+
+    if(arrayValores.length === 0){
+        filteredObj = past.filter(event => {
+            //Filtramos los eventos en base al input ingresado
+            const eventName = event.name.toLowerCase();
+            return eventName.includes(searchValue);
+        })
+    } else {
+        filteredObj = past.filter(event => {
+            //Filtramos los eventos en base al input ingresado
+            const eventName = event.name.toLowerCase();
+            return eventName.includes(searchValue) && arrayValores.includes(event.category);
+        })
+    }
+
+    
+    let errorTemplate = ''
+    errorTemplate = `<div class="container-fluid d-flex flex-column h-auto"><h4>Oops! Looks like we made a mistake.</h4>
+                    <p>The element you searched was not found in our database, please try to look for it with another term!
+                    If you think this is a mistake, please contact us.</p></div>`
+    
+    // Update the cards based on the filtered events
+    if (filteredObj.length === 0) {
+        printNotFound($cardContainer, errorTemplate)
+    } else {
+        printHTMLCard(filteredObj, $cardContainer);
+    }
+}
+
+$checkContainer.addEventListener('change', combinedFilters)
+$search.addEventListener('input', combinedFilters)
