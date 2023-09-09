@@ -1,17 +1,35 @@
 let past =[];
-let eventData = data.events
+
+const ApiUrl = "https://mindhub-xj03.onrender.com/api/amazing"
+
+async function getAPI(){
+    await fetch(ApiUrl)
+        .then((response) => response.json())
+        .then(data => {
+            eventData = data.events
+            currentDate = data.currentDate
+            //Inicializacion de la funcion de filtrado
+            eventsFilter(eventData, currentDate)
+            //agrega los eventos a un array de filtrados
+            addEvent(past)
+            printHTMLCard(past, $cardContainer)
+            //Incializacion de la funcion de checks
+            const nonRepeatCateg = [ ...new Set(past.map(eventData => eventData.category))]
+            printCheck(nonRepeatCateg, $checkContainer)
+            combinedFilters()
+  })
+}
+
+getAPI()
 
 //Filtrado de eventos por fecha anterior a la actual
-function eventsFilter(parameterArray){
+function eventsFilter(parameterArray, date){
     for (let event of parameterArray){
-        if(Date.parse(`${event.date}`) < Date.parse(data.currentDate)){
+        if(event.date < date){
             past.push(event)
         }
     }
 }
-
-//Inicializacion de la funcion de filtrado
-eventsFilter(eventData)
 
 //Agrega los eventos filtrados
 function addEvent(filteredArrays){
@@ -46,13 +64,12 @@ let cards = document.getElementById('eventcards');
 
 cards.innerHTML = cardTemplate;
 
-
 //Para los checkbox que muestran categorias
 const $checkContainer = document.getElementById('checkboxes')
 
 const $cardContainer = document.getElementById('eventcards')
 
-const nonRepeatCateg = [ ...new Set(past.map(events => events.category))]
+const nonRepeatCateg = [ ...new Set(past.map(eventData => eventData.category))]
 
 //Creacion de la estructura de los Checkboxes
 function estructuraChecks(string){
@@ -73,8 +90,6 @@ function printCheck(array, HTMLelement){
 
     HTMLelement.innerHTML = estructure;
 }
-
-printCheck(nonRepeatCateg, $checkContainer)
 
 //Event Listener para que procese los checkbox marcados
 $checkContainer.addEventListener('change', (e) => {
@@ -133,16 +148,7 @@ favorites.forEach(function (button) {
 });
 
 //Funcion para busqueda en search bar
-
-//Funcion para retornar texto cuando no devuelve nada la busqueda
-
-function printNotFound(elementoHTML, errorTemplate){
-    elementoHTML.innerHTML = errorTemplate
-}
-
 //Event Listener para que procese los checkbox marcados
-
-let events = data.events
 
 const $search = document.getElementById('input')
 
@@ -178,6 +184,12 @@ function combinedFilters(){
     } else {
         printHTMLCard(filteredObj, $cardContainer);
     }
+}
+
+//Funcion para retornar texto cuando no devuelve nada la busqueda
+
+function printNotFound(elementoHTML, errorTemplate){
+    elementoHTML.innerHTML = errorTemplate
 }
 
 $checkContainer.addEventListener('change', combinedFilters)

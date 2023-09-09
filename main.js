@@ -1,25 +1,48 @@
+const ApiUrl = "https://mindhub-xj03.onrender.com/api/amazing"
+
+async function getAPI(){
+    await fetch(ApiUrl)
+        .then((response) => response.json())
+        .then(data => {
+            eventData = data.events
+            //incio de la funcion de agregar eventos
+            addEvent(eventData)
+
+            printHTMLCard(eventData, $cardContainer)
+            //Inicializacion de funcion de checks
+            const nonRepeatCateg = [ ...new Set(eventData.map(events => events.category))]
+            printCheck(nonRepeatCateg, $checkContainer)
+
+            combinedFilters()
+  })
+}
+
+getAPI()
+
 let templatecards = ''
 
-for (let event of data.events){
-    templatecards += `<div class="col" style="max-width: 23vw">
-        <div class="card h-100 shadow-lg bg-body-tertiary rounded">
-            <div class="d-flex flex-wrap position-relative">
-                <button class="favorite btn btn-lg position-absolute top-0 end-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=currentfill" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                    </svg>
-                </button>
-                <img src="${event.image}" class="card-img-top">
+function addEvent(array){
+    for (let event of array){
+        templatecards += `<div class="col" style="max-width: 23vw">
+            <div class="card h-100 shadow-lg bg-body-tertiary rounded">
+                <div class="d-flex flex-wrap position-relative">
+                    <button class="favorite btn btn-lg position-absolute top-0 end-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=currentfill" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                        </svg>
+                    </button>
+                    <img src="${event.image}" class="card-img-top">
+                </div>
+                <div class="card-body d-flex flex-column align-items-center">
+                    <h4 class="card-title" id="cardTitle">${event.name}</h4>
+                    <p class="card-text">${event.description}</p>
+                </div>
+                <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
+                    <h5 class="mb-0">$${event.price}</h5>
+                    <button type="button" class="btn btn-lg btn-outline-primary"><a href="./details.html?id=${event._id}" class="detailslink">Details</a></button>
+                </div>
             </div>
-            <div class="card-body d-flex flex-column align-items-center">
-                <h4 class="card-title" id="cardTitle">${event.name}</h4>
-                <p class="card-text">${event.description}</p>
-            </div>
-            <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                <h5 class="mb-0">$${event.price}</h5>
-                <button type="button" class="btn btn-lg btn-outline-primary"><a href="./details.html?id=${event._id}" class="detailslink">Details</a></button>
-            </div>
-        </div>
-    </div>`
+        </div>`
+    }
 }
 
 let cards = document.getElementById('eventcards');
@@ -32,7 +55,7 @@ const $checkContainer = document.getElementById('checkboxes')
 
 const $cardContainer = document.getElementById('eventcards')
 
-const nonRepeatCateg = [ ...new Set(data.events.map(events => events.category))]
+
 
 //Creacion de la estructura de los Checkboxes
 function estructuraChecks(string){
@@ -53,8 +76,6 @@ function printCheck(array, HTMLelement){
 
     HTMLelement.innerHTML = estructure;
 }
-
-printCheck(nonRepeatCateg, $checkContainer)
 
 function createCard(objData){
     let templatecards = ''
@@ -108,8 +129,6 @@ function printNotFound(elementoHTML, errorTemplate){
 
 //Event Listener para que procese los checkbox marcados
 
-let events = data.events
-
 const $search = document.getElementById('input')
 
 function combinedFilters(){
@@ -120,13 +139,13 @@ function combinedFilters(){
     // filteredObj = events.filter(event => arrayValores.includes(event.category))
 
     if(arrayValores.length === 0){
-        filteredObj = events.filter(event => {
+        filteredObj = eventData.filter(event => {
             //Filtramos los eventos en base al input ingresado
             const eventName = event.name.toLowerCase();
             return eventName.includes(searchValue);
         })
     } else {
-        filteredObj = events.filter(event => {
+        filteredObj = eventData.filter(event => {
             //Filtramos los eventos en base al input ingresado
             const eventName = event.name.toLowerCase();
             return eventName.includes(searchValue) && arrayValores.includes(event.category);

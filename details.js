@@ -1,29 +1,39 @@
-const queryString = location.search
+const ApiUrl = "https://mindhub-xj03.onrender.com/api/amazing"
 
-const events = data.events
+async function getAPI(){
+    await fetch(ApiUrl)
+        .then((response) => response.json())
+        .then(data => {
+            eventData = data.events
+            const objData = eventData.find(event => event._id == id)
+            printCard(objData)
+  })
+}
+
+getAPI()
+
+const queryString = location.search
 
 const params = new URLSearchParams(queryString)
 
 const id = params.get('id')
 
-const objData = events.find(event => event._id == id)
-
-console.log(objData)
-
 const div = document.getElementById('detailcard')
 
+function printCard(array){
 div.innerHTML = `<div class="row g-0">
-<div class="col-md-6">
-  <img src="${objData.image}" class="img-fluid rounded-start">
-</div>
-<div class="col-md-6">
-  <div class="card-body">
-    <h5 class="card-title">${objData.name}</h5>
-    <p class="card-text">${objData.category}</p>
-    <p class="card-text">${objData.description}</p>
-    <p class="card-text">Place: ${objData.place}</p>
-    <p class="card-text">Capacity: ${objData.capacity}</p>
-    <p class="card-text">Price: $${objData.price}</p>
-  </div>
-</div>
-</div>`
+    <div class="col-md-6">
+    <img src="${array.image}" class="img-fluid rounded-start">
+    </div>
+    <div class="col-md-6">
+    <div class="card-body">
+        <h5 class="card-title">${array.name}</h5>
+        <p class="card-text">${array.category}</p>
+        <p class="card-text">${array.description}</p>
+        <p class="card-text">Place: ${array.place}</p>
+        <p class="card-text">Capacity: ${array.capacity}</p>
+        <p class="card-text">Price: $${array.price}</p>
+    </div>
+    </div>
+    </div>`
+}

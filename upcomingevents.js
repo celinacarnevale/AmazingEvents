@@ -1,17 +1,35 @@
 let future =[];
-let eventData = data.events
 
-//Filtrado de eventos por fecha anterior a la actual
-function eventsFilter(parameterArray){
+const ApiUrl = "https://mindhub-xj03.onrender.com/api/amazing"
+
+async function getAPI(){
+    await fetch(ApiUrl)
+        .then((response) => response.json())
+        .then(data => {
+            eventData = data.events
+            currentDate = data.currentDate
+            //Inicializacion de la funcion de filtrado
+            eventsFilter(eventData, currentDate)
+            //agrega los eventos a un array de filtrados
+            addEvent(future)
+            printHTMLCard(future, $cardContainer)
+            //Incializacion de la funcion de checks
+            const nonRepeatCateg = [ ...new Set(future.map(eventData => eventData.category))]
+            printCheck(nonRepeatCateg, $checkContainer)
+            combinedFilters()
+  })
+}
+
+getAPI()
+
+//Filtrado de eventos por fecha futura a la actual
+function eventsFilter(parameterArray, currentDate){
     for (let event of parameterArray){
-        if(Date.parse(`${event.date}`) > Date.parse(data.currentDate)){
+        if(event.date > currentDate){
             future.push(event)
         }
     }
 }
-
-//Inicializacion de la funcion de filtrado
-eventsFilter(eventData)
 
 //Agrega los eventos filtrados
 function addEvent(filteredArrays){
@@ -42,8 +60,6 @@ function addEvent(filteredArrays){
 
 let cardTemplate = addEvent(future)
 
-console.log(future)
-
 let cards = document.getElementById('eventcards')
 cards.innerHTML += cardTemplate
 
@@ -73,8 +89,6 @@ function printCheck(array, HTMLelement){
 
     HTMLelement.innerHTML = estructure;
 }
-
-printCheck(nonRepeatCateg, $checkContainer)
 
 //Event Listener para que procese los checkbox marcados
 $checkContainer.addEventListener('change', (e) => {
@@ -141,9 +155,6 @@ function printNotFound(elementoHTML, errorTemplate){
 }
 
 //Event Listener para que procese los checkbox marcados
-
-let events = data.events
-
 const $search = document.getElementById('input')
 
 function combinedFilters(){
