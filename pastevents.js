@@ -12,10 +12,15 @@ async function getAPI(){
             eventsFilter(eventData, currentDate)
             //agrega los eventos a un array de filtrados
             addEvent(past)
+            //imprime las cards 
             printHTMLCard(past, $cardContainer)
+
             //Incializacion de la funcion de checks
             const nonRepeatCateg = [ ...new Set(past.map(eventData => eventData.category))]
+            //imprime los checks
             printCheck(nonRepeatCateg, $checkContainer)
+
+            //inicializacion de la funcion de filtros
             combinedFilters()
   })
 }

@@ -12,10 +12,15 @@ async function getAPI(){
             eventsFilter(eventData, currentDate)
             //agrega los eventos a un array de filtrados
             addEvent(future)
+            //imprime las cards
             printHTMLCard(future, $cardContainer)
+
             //Incializacion de la funcion de checks
             const nonRepeatCateg = [ ...new Set(future.map(eventData => eventData.category))]
+            //imprime las categorias
             printCheck(nonRepeatCateg, $checkContainer)
+
+            //Inicializacion de la funcion de filtros
             combinedFilters()
   })
 }
@@ -67,8 +72,6 @@ cards.innerHTML += cardTemplate
 const $checkContainer = document.getElementById('checkboxes')
 
 const $cardContainer = document.getElementById('eventcards')
-
-const nonRepeatCateg = [ ...new Set(future.map(events => events.category))]
 
 //Creacion de la estructura de los Checkboxes
 function estructuraChecks(string){

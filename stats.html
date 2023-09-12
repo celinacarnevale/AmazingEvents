@@ -88,6 +88,7 @@
         <!--Tabla-->
         <div class="container-fluid p-4">
             <table class="table table-bordered width-80vw table-responsive-lg">
+              <thead>
                 <tr>
                     <th class="table-primary" colspan="3">Event Statistics</th>
                 </tr>
@@ -96,13 +97,11 @@
                     <td>Events with lowest % of assistance</td>
                     <td>Events with larger capacity</td>
                 </tr>
-                <tr id="FirstTable">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+              </thead>
+                <tbody id="eventStats"></tbody>
               </table>
               <table class="table table-bordered width-80vw table-responsive-lg">
+                <thead>
                 <tr>
                     <th class="table-primary" colspan="3">Upcoming events statistics by category</th>
                 </tr>
@@ -111,18 +110,11 @@
                     <td>Revenues</td>
                     <td>Percentage of assistance</td>
                 </tr>
-                <tr id="SecondTable">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+              </thead>
+                <tbody id="upcomingStats"></tbody>
               </table>
               <table class="table table-bordered width-80vw table-responsive-lg">
+                <thead>
                 <tr>
                     <th class="table-primary" colspan="3">Past events statistics by category</th>
                 </tr>
@@ -131,16 +123,8 @@
                     <td>Revenues</td>
                     <td>Percentage of assistance</td>
                 </tr>
-                <tr id="ThirdTable">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+              </thead>
+                <tbody id="pastStats"></tbody>
             </table>
         </div>
 

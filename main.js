@@ -55,8 +55,6 @@ const $checkContainer = document.getElementById('checkboxes')
 
 const $cardContainer = document.getElementById('eventcards')
 
-
-
 //Creacion de la estructura de los Checkboxes
 function estructuraChecks(string){
     let templatecheck = ''
