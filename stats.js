@@ -52,11 +52,11 @@ getAPI()
 
 function tableCalculations(firstArray, secondArray){
   firstArray.forEach((event) => {
-    tableCalcsCapacity.push([name= event.name, capacity= event.capacity])
+    tableCalcsCapacity.push([event.name, event.capacity])
   })
   secondArray.forEach((event) => {
-    tableCalcsCapacity.push([name= event.name, capacity= event.capacity])
-    tableCalcsAssistance.push([name= event.name, assistance= ((event.assistance / event.capacity) * 100)])
+    tableCalcsCapacity.push([event.name, event.capacity])
+    tableCalcsAssistance.push([event.name, ((event.assistance / event.capacity) * 100)])
   })
 
  //Events with highest % of assistance
@@ -65,9 +65,12 @@ function tableCalculations(firstArray, secondArray){
   })
   //Events with lowest % of assistance
   lowestAssistance = tableCalcsAssistance.reduce((cur, prev) => {
-  return (cur[1] < prev[1])? cur : prev})
+  return (cur[1] < prev[1])? cur : prev
+})
   //Events with larger capacity
-  capacity = tableCalcsCapacity.reduce((cur, prev) => {return (cur[1] > prev[1]) ? cur : prev})
+  capacity = tableCalcsCapacity.reduce((cur, prev) => {
+    return (cur[1] > prev[1]) ? cur : prev
+  })
  
   firstTableCalcs.push({
     //Events with highest % of assistance
