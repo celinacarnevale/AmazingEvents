@@ -7,6 +7,7 @@ let capacity = []
 let tableCalcsCapacity = []
 let tableCalcsAssistance = []
 let firstTableCalcs = []
+let name = []
 
 const ApiUrl = "https://mindhub-xj03.onrender.com/api/amazing"
 
@@ -26,6 +27,8 @@ async function getAPI(){
     console.log(tableCalcsCapacity)
     console.log(tableCalcsAssistance)
     console.log(firstTableCalcs)
+
+    firstTableCalcs.assistance = 
 
     asignFirstStructure(firstTableCalcs)
     printFirstTable(firstTableCalcs, $firstTableContainer)
@@ -49,27 +52,30 @@ getAPI()
 
 function tableCalculations(firstArray, secondArray){
   firstArray.forEach((event) => {
-    tableCalcsCapacity.push(capacity = event.capacity)
+    tableCalcsCapacity.push([name= event.name, capacity= event.capacity])
   })
   secondArray.forEach((event) => {
-    tableCalcsCapacity.push(capacity = event.capacity)
-    tableCalcsAssistance.push(assistance = ((event.assistance / event.capacity) * 100))
+    tableCalcsCapacity.push([name= event.name, capacity= event.capacity])
+    tableCalcsAssistance.push([name= event.name, assistance= ((event.assistance / event.capacity) * 100)])
   })
 
-  //Events with highest % of assistance
-  highAssistance = [tableCalcsAssistance.reduce((cur, prev) => {return (cur > prev)? cur : prev})],
+ //Events with highest % of assistance
+  highAssistance = tableCalcsAssistance.reduce((cur, prev) => {
+    return (cur[1] > prev[1])? cur : prev
+  })
   //Events with lowest % of assistance
-  lowestAssistance = [tableCalcsAssistance.reduce((cur, prev) => {return (cur < prev)? cur : prev})],
+  lowestAssistance = tableCalcsAssistance.reduce((cur, prev) => {
+  return (cur[1] < prev[1])? cur : prev})
   //Events with larger capacity
-  capacity = [tableCalcsCapacity.reduce((cur, prev) => {return (cur > prev) ? cur : prev})],
-
+  capacity = tableCalcsCapacity.reduce((cur, prev) => {return (cur[1] > prev[1]) ? cur : prev})
+ 
   firstTableCalcs.push({
     //Events with highest % of assistance
     highAssistance,
     //Events with lowest % of assistance
     lowestAssistance,
     //Events with larger capacity
-    capacity,
+    capacity
   })
 }
 
@@ -126,14 +132,13 @@ function asignStructure(array){
 
 let templateFirstTable = ''
 function asignFirstStructure(array){
-  for(let calc of array){
     templateFirstTable += `<tr>
-      <td>${calc.highAssistance}</td>
-      <td>${calc.lowestAssistance}</td>
-      <td>${calc.capacity}</td>
+      <td>${highAssistance}</td>
+      <td>${lowestAssistance}</td>
+      <td>${capacity}</td>
     </tr>`
   return templateTable
-}}
+}
 
 let firstTable = document.getElementById('eventStats');
 firstTable.innerHTML = templateTable;
@@ -160,9 +165,9 @@ function createTable(objData){
 function createFirstTable(objData){
   let templateFirstTable = ''
   templateFirstTable += `<tr>
-  <td>${objData.highAssistance}%</td>
-  <td>${objData.lowestAssistance}%</td>
-  <td>${objData.capacity}</td>
+  <td>${objData.highAssistance[0]} ${objData.highAssistance[1]}%</td>
+  <td>${objData.lowestAssistance[0]} ${objData.lowestAssistance[1]}%</td>
+  <td>${objData.capacity[0]} ${objData.capacity[1]}</td>
 </tr>`
 
   return templateFirstTable
